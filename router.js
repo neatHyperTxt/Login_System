@@ -17,7 +17,7 @@ router.post('/login',(req,res)=>
     }
     else
     {
-        res.end('Invalid Password or Username');
+        res.end('Invalid Password/Username');
     }
 })
 
