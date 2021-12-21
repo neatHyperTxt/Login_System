@@ -12,7 +12,7 @@ app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended:true}))
 app.set('view engine','ejs');
 
-app.use('/static',express.static(path.join(__xdirname,'public')))
+app.use('/static',express.static(path.join(__dirname,'public')))
 app.use('/assets',express.static(path.join(__dirname,'public/assets')));
 
 app.use(session(
@@ -26,7 +26,4 @@ app.get('/',(req,res)=>
 {
     res.render('base',{title:'Login System'});
 })
-app.listen(port,()=>
-{
-    console.log('Listening to server on http://localhost:3000');
-})
+app.listen(port);
