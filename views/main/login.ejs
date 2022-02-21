@@ -1,0 +1,21 @@
+<%-include('../partials/header.ejs')%> 
+<div class="text-center center-div" id="login">
+    <div class="container w-50 border py-5">
+        <div class="title">
+            <h2 class="font-width-bold">Login System</h2>
+            <span class="text-muted">Log in for the existing user</span>
+            <form action="/login" method="POST">
+                <div class="form-group mt-3">
+                    <label for="email" class="d-flex">Registered Email</label>
+                    <input id="email" name="email" type="email" class="form-control">
+                </div>
+                <div class="form-group mt-3">
+                    <label for="email" class="d-flex">Password</label>
+                    <input type="password" name="password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-success mt-3">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+<%-include('../partials/footer.ejs')%> 
