@@ -15,6 +15,14 @@ app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'views'));
 app.use('/static',express.static(path.join(__dirname,'public')));
 app.use(express.urlencoded({extended:true}));
+const requireLogin = (req,res,next)=>
+{
+    if(!req.session.user_id)
+    {
+        return res.redirect('/login');
+    }
+    next();
+}
 app.use(session({
     saveUninitialized:true,
     resave:false,
@@ -35,6 +43,7 @@ app.post('/',async (req,res)=>
 {
     const user = new User(req.body);
     await user.save();
+    req.session.user_id = user._id;
     req.flash('success','Registered Successfully');
     res.redirect('/login');
 })
@@ -45,8 +54,10 @@ app.get('/login',(req,res)=>
 app.post('/login',async (req,res)=>
 {
     const {email,password} = req.body;
-    if(await User.isValid(email,password))
+    const foundUser = await User.isValid(email,password);
+    if(foundUser)
     {
+        req.session.user_id = foundUser._id;
         req.flash('success','You Have Logged in Successfully');
         res.redirect('/secret');
     }
@@ -55,9 +66,15 @@ app.post('/login',async (req,res)=>
         res.redirect('/login');
     }
 })
-app.get('/secret',(req,res)=>
+app.get('/secret',requireLogin,(req,res)=>
 {
     res.render('main/secret',{title:'Secret Page'});
+})
+app.post('/logout',(req,res)=>
+{
+    req.session.user_id = null;
+    req.flash('success','Logged Out Successfully')
+    res.redirect('/login');
 })
 app.listen(3000,()=>
 {
